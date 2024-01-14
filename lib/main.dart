@@ -19,7 +19,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const DetailPage()
+      initialRoute: '/home_page',
+      routes: {
+        '/home_page': (context) => const MyHomePage(),
+        '/detail_page' : (context) => const DetailPage(),
+      },
       //const MyHomePage(),
     );
   }

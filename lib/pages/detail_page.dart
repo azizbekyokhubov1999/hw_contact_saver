@@ -1,13 +1,29 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:hw_contact_saver/models/contact_model.dart';
+import 'package:hw_contact_saver/services/storage_service.dart';
 class DetailPage extends StatefulWidget {
+
   const DetailPage({super.key});
+
+  static const id = '/detail_page';
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
+
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerPhoneNumber = TextEditingController();
+  late Contact contact;
+
+
+  void loadContact() {
+    contact.name = controllerName.text;
+    contact.phoneNumber = controllerPhoneNumber.text;
+  }
 
   Widget saveBtn(){
     return Padding(
@@ -30,6 +46,8 @@ class _DetailPageState extends State<DetailPage> {
   }
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -82,8 +100,9 @@ class _DetailPageState extends State<DetailPage> {
                )
                  ]
                ),
-               child: const TextField(
-                decoration: InputDecoration(
+               child:  TextField(
+                 controller: controllerName,
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: "Name",
                   hintStyle: TextStyle(
@@ -114,8 +133,9 @@ class _DetailPageState extends State<DetailPage> {
                     )
                   ]
               ),
-              child: const TextField(
-                decoration: InputDecoration(
+              child:  TextField(
+                controller: controllerPhoneNumber,
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "Phone Number",
                     hintStyle: TextStyle(

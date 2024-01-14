@@ -1,13 +1,38 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import '../services/storage_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+  static const id = '/home_page';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  bool isLoading = false;
+  List<File> fileList = [];
+  List<Directory> directoryList = [];
+
+
+  @override
+  void initState(){
+    StorageService.getDirectory().then((value) {
+      value.listSync().forEach((element) {
+        if(element.path.endsWith(".txt")){
+          if(element is File){
+            fileList.add(element);
+          }
+        }
+      });
+    });
+    isLoading = true;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +74,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: const  Center(
+      body: isLoading ?
+      Column(
+        children: [
+          ListView.builder(
+            itemCount: fileList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index){
+              return Card(
+                child: ListTile(
+                  title: Text(fileList[index].path),
+                ),
+              );
+            },
+          ),
+        ],
+      ) : const  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
